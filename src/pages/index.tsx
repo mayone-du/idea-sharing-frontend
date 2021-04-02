@@ -1,3 +1,5 @@
+import { GetStaticProps } from "next";
+
 const Home: React.FC = () => {
   return (
     <>
@@ -7,3 +9,11 @@ const Home: React.FC = () => {
 }
 
 export default Home;
+
+
+
+// const getStaticProps: GetStaticProps = () => {
+  
+// }
+
+// export { getStaticProps };
