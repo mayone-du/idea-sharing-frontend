@@ -1,12 +1,33 @@
-import Head from 'next/head';
+import Head from "next/head";
+import Link from "next/link";
 
-const Layout: React.FC<{ children?: React.ReactNode, title: string, }> = ({ children, title }) => {
+const Layout: React.FC<{ children?: React.ReactNode; metaTitle: string }> = ({
+  children,
+  metaTitle,
+}) => {
   return (
     <>
       <Head>
-        <title>{title}</title>
+        <title>{metaTitle}</title>
       </Head>
       <div>
+        <header>
+          <nav>
+            <ul>
+              <li>
+                <Link href="/">
+                  <a>HOME</a>
+                </Link>
+              </li>
+              <li>
+                <Link href="/auth">
+                  <a>auth</a>
+                </Link>
+              </li>
+            </ul>
+          </nav>
+        </header>
+
         {children}
       </div>
     </>

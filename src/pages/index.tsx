@@ -1,5 +1,7 @@
+import { Layout } from '../components/Layout';
 import { getIdeas } from "../lib/getIdeas";
 import { getComments } from "../lib/getComments";
+import { useState } from "react";
 // import { GetStaticProps } from "next";
 
 type Ideas = [
@@ -27,8 +29,42 @@ const Home: React.FC<{ ideas: Ideas; comments: Comments }> = ({
   ideas,
   comments,
 }) => {
+
+
+  // const [isLogin, setIsLogin] = useState(false);
+  // const [username, setUsername] = useState('')
+  // const [password, setPassword] = useState('')
+  
+  // const jwtCreate = async () => {
+  //   await fetch(`${process.env.NEXT_PUBLIC_RESTAPI_URL}api/auth/jwt/create/`,
+  //   {
+  //     method: 'POST',
+  //     body: JSON.stringify({ username: username, password: password}),
+  //   })
+  //   .then((res) => {
+  //     if (res.status === 401) {
+  //       throw new Error('Un Authorized')
+  //     } else if (res.ok) {
+
+  //     }
+  //   })
+  // }
+
+
+
+
+
+
+
+
+
+
+
   return (
     <>
+    <Layout
+      metaTitle='HOME'
+    >
       <h1>Hello, World!!</h1>
       <div>
         {ideas.map((idea) => {
@@ -58,6 +94,9 @@ const Home: React.FC<{ ideas: Ideas; comments: Comments }> = ({
           )
         })}
       </div>
+
+    </Layout>
+
     </>
   );
 };
