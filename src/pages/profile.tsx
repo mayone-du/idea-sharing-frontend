@@ -1,7 +1,5 @@
 import { getUsers } from "../lib/getUsers";
-import { UserContextProvider } from "../contexts/UserContext";
 import { Layout } from "../components/Layout";
-import { User } from "../components/User";
 
 type Users = [
   {
@@ -14,13 +12,8 @@ type Users = [
 const Profile: React.VFC<{ users: Users }> = ({ users }) => {
   return (
     <>
-      <UserContextProvider>
         <Layout metaTitle="profile">
           <h1 className="text-4xl text-center my-4">profile</h1>
-
-          <div>
-            <User />
-          </div>
 
           <div>
             <h2 className='text-3xl text-center mt-20'>users-list</h2>
@@ -35,7 +28,6 @@ const Profile: React.VFC<{ users: Users }> = ({ users }) => {
             })}
           </div>
         </Layout>
-      </UserContextProvider>
     </>
   );
 };
