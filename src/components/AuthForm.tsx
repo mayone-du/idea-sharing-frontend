@@ -1,6 +1,5 @@
-import { useState, useContext, useEffect } from "react";
+import { useState } from "react";
 import { TextField, Button } from "@material-ui/core";
-import { UserContext } from "../contexts/UserContext";
 import Cookie from "universal-cookie";
 import { useRouter } from "next/router";
 
@@ -9,7 +8,6 @@ const cookie = new Cookie();
 const AuthForm: React.VFC<{ isLogin: boolean }> = ({ isLogin }) => {
   const router = useRouter();
 
-  const { loginUser, setLoginUser } = useContext(UserContext);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -42,8 +40,7 @@ const AuthForm: React.VFC<{ isLogin: boolean }> = ({ isLogin }) => {
         const refreshOptions = { path: "/", maxAge: 60 * 60 * 24 * 7 };
         cookie.set("access_token", data.access, accessOptions);
         cookie.set("refresh_token", data.refresh, refreshOptions);
-        setLoginUser({ ...loginUser, username: username })
-        // router.push("/");
+        router.push("/");
       });
   };
 
@@ -66,10 +63,8 @@ const AuthForm: React.VFC<{ isLogin: boolean }> = ({ isLogin }) => {
           e.preventDefault();
           if (isLogin) {
             login();
-            setLoginUser({ ...loginUser, id: 3, username: username });
           } else {
             register();
-            setLoginUser({ ...loginUser, id: 3, username: username });
           }
         }}
       >
@@ -101,13 +96,6 @@ const AuthForm: React.VFC<{ isLogin: boolean }> = ({ isLogin }) => {
           <Button variant="contained">logout</Button>
         </div>
       </form>
-      <div className="m-40">
-        <div>
-
-        {loginUser.id}
-        </div>
-        <div>{loginUser.username}</div>
-      </div>
     </>
   );
 };
