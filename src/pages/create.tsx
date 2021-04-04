@@ -1,10 +1,28 @@
 import { Layout } from "../components/Layout";
 import { TextField, Button } from "@material-ui/core";
 import { useState } from "react";
+import Cookie from 'universal-cookie';
+
 
 const Create: React.VFC = () => {
+
+  const cookie = new Cookie();
+
   const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
+
+
+  const createIdea = async () => {
+    await fetch(`${process.env.NEXT_PUBLIC_RESTAPI_URL}api/idea/`,{
+      method: 'POSt',
+      body: JSON.stringify({ title: title, contents: contents, createuser: 1, is_published: false, }),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `JWT ${cookie.get('access_token')}`
+      }
+    })
+
+  }
 
   return (
     <>
@@ -17,6 +35,7 @@ const Create: React.VFC = () => {
             onSubmit={(e) => {
               e.preventDefault();
               console.log(title, contents)
+              createIdea();
             }}
           >
           <div>
