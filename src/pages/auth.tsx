@@ -40,10 +40,8 @@ const Auth: React.VFC = () => {
       .then((data) => {
         const accessOptions = { path: "/", maxAge: 60 * 60 };
         const refreshOptions = { path: "/", maxAge: 60 * 60 * 24 * 7 };
-        // const refreshOptions = { path: '/', expires: new Date(Date.now() + 1) };
         cookie.set("access_token", data.access, accessOptions);
         cookie.set("refresh_token", data.refresh, refreshOptions);
-        console.log(cookie.getAll());
         router.push("/");
       });
   };
