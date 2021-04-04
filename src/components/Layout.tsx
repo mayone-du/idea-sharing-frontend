@@ -13,15 +13,25 @@ const Layout: React.FC<{ children?: React.ReactNode; metaTitle: string }> = ({
       <div>
         <header>
           <nav>
-            <ul>
-              <li>
+            <ul className='flex items-center justify-center m-4'>
+              <li className='m-2 text-blue-400'>
                 <Link href="/">
                   <a>HOME</a>
                 </Link>
               </li>
-              <li>
+              <li className='m-2 text-blue-400'>
                 <Link href="/auth">
                   <a>auth</a>
+                </Link>
+              </li>
+              <li className='m-2 text-blue-400'>
+                <Link href="/profile">
+                  <a>profile</a>
+                </Link>
+              </li>
+              <li className='m-2 text-blue-400'>
+                <Link href="/create">
+                  <a>create</a>
                 </Link>
               </li>
             </ul>

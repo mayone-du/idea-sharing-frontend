@@ -1,13 +1,13 @@
 import { TextField, Button } from "@material-ui/core";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Cookie from "universal-cookie";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
+import { Layout } from "../components/Layout";
+// import { UserContext, UserContextProvider } from '../contexts/UserContext';
 
 const cookie = new Cookie();
 
 const Auth: React.VFC = () => {
-
-
   const router = useRouter();
 
   const [isLogin, setIsLogin] = useState(false);
@@ -44,7 +44,7 @@ const Auth: React.VFC = () => {
         cookie.set("access_token", data.access, accessOptions);
         cookie.set("refresh_token", data.refresh, refreshOptions);
         console.log(cookie.getAll());
-        router.push('/');
+        router.push("/");
       });
   };
 
@@ -61,41 +61,43 @@ const Auth: React.VFC = () => {
 
   return (
     <>
-      <div>
-        <h1 className="text-4xl text-center my-4">ログイン・新規登録画面</h1>
-        <Button
-          variant="outlined"
-          onClick={() => {
-            setIsLogin(!isLogin);
-          }}
-        >
-          changeMode
-        </Button>
-        <div className="m-10">
-          <p>username</p>
-          <TextField
-            type="text"
-            placeholder="username"
-            variant="outlined"
-            onChange={usernameChange}
-          />
-        </div>
-        <div className="m-10">
-          <p>password</p>
-          <TextField
-            type="password"
-            placeholder="password"
-            variant="outlined"
-            onChange={passwordChange}
-          />
-        </div>
-
+      <Layout metaTitle='auth'>
         <div>
-          <Button onClick={isLogin ? login : register} variant="contained">
-            {isLogin ? 'login' : 'register' }
+          <h1 className="text-4xl text-center my-4">ログイン・新規登録画面</h1>
+          <Button
+            variant="outlined"
+            onClick={() => {
+              setIsLogin(!isLogin);
+            }}
+          >
+            changeMode
           </Button>
+          <div className="m-10">
+            <p>username</p>
+            <TextField
+              type="text"
+              placeholder="username"
+              variant="outlined"
+              onChange={usernameChange}
+            />
+          </div>
+          <div className="m-10">
+            <p>password</p>
+            <TextField
+              type="password"
+              placeholder="password"
+              variant="outlined"
+              onChange={passwordChange}
+            />
+          </div>
+
+          <div>
+            <Button onClick={isLogin ? login : register} variant="contained">
+              {isLogin ? "login" : "register"}
+            </Button>
+          </div>
         </div>
-      </div>
+      </Layout>
     </>
   );
 };

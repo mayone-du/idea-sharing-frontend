@@ -21,6 +21,7 @@ type Comments = [
     id: number;
     idea: number;
     comment: string;
+    comment_user: number;
     created_at: string;
   }
 ];
@@ -88,6 +89,7 @@ const Home: React.FC<{ ideas: Ideas; comments: Comments }> = ({
           <div key={comment.id.toString()} className="m-10">
             <div>comment id - {comment.id.toString()}</div>
             <div>idea id - {comment.idea}</div>
+            <div>comment_user id - {comment.comment_user.toString()}</div>
             <div>comment - {comment.comment}</div>
             <div>created_at - {comment.created_at}</div>
           </div>

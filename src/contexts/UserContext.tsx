@@ -4,7 +4,7 @@ const UserContext = createContext<any>({});
 export { UserContext };
 
 const UserContextProvider = ({ children }: any) => {
-  const [loginUser, setLoginUser] = useState({ id: 0, username: '' });
+  const [loginUser, setLoginUser] = useState({ id: 0, username: '', profile_text: '', });
 
 
   return (
