@@ -14,66 +14,79 @@ type Users = [
   }
 ];
 
-
 const Profile: React.VFC<{ users: Users }> = ({ users }) => {
-
-  const [loginUser, setLoginUser] = useState([{ id: 0, username: '', profile_text: ''}]);
+  const [loginUser, setLoginUser] = useState([
+    { id: 0, username: "", profile_text: "" },
+  ]);
 
   const getMyProfile = async () => {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/my-profile/`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `JWT ${cookie.get("access_token")}`,
-        },
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/my-profile/`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `JWT ${cookie.get("access_token")}`,
+          },
+        }
+      );
+      if (res.ok) {
+        // console.log(res);
+        const profile = await res.json();
+        setLoginUser(profile);
+        // console.log(profile);
+        return profile;
+      } else if (res.status === 401) {
+        throw new Error("認証情報が含まれていないか、期限が切れています。");
       }
-    );
-    // console.log(res);
-    const profile = await res.json();
-    setLoginUser(profile);
-    // console.log(profile);
-    return profile;
+    } catch (err) {
+      alert("ログインされていないか、認証が切れています。");
+      // return [
+      //   {
+      //     id: 88,
+      //     username: '',
+      //     profile_text: '',
+      //   }
+      // ]
+    }
   };
-
 
   useEffect(() => {
     getMyProfile();
-  }, [])
+  }, []);
 
   return (
     <>
-        <Layout metaTitle="profile">
-          <h1 className="text-4xl text-center my-4">profile</h1>
+      <Layout metaTitle="profile">
+        <h1 className="text-4xl text-center my-4">profile</h1>
 
+        <div className="m-40">
+          <h2 className="text-3xl text-center mt-20">my profile</h2>
+          {loginUser.map((item, index) => {
+            return (
+              <div key={index.toString()}>
+                <p>{item.id}</p>
+                <p>{item.username}</p>
+                <p>{item.profile_text}</p>
+              </div>
+            );
+          })}
+        </div>
 
-          <div className="m-40">
-            <h2 className='text-3xl text-center mt-20'>my profile</h2>
-            {loginUser.map((item, index) => {
-              return (
-                <div key={index.toString()}>
-                  <p>{item.id}</p>
-                  <p>{item.username}</p>
-                  <p>{item.profile_text}</p>
-                </div>
-              )
-            })}
-          </div>
-
-          <div>
-            <h2 className='text-3xl text-center mt-20'>users-list</h2>
-            {users.map((user) => {
-              return (
-                <div key={user.id.toString()}>
-                  <div>user-id : {user.id}</div>
-                  <div>username : {user.username}</div>
-                  <div>profile : {user.profile_text}</div>
-                </div>
-              );
-            })}
-          </div>
-        </Layout>
+        <div>
+          <h2 className="text-3xl text-center mt-20">users-list</h2>
+          {users.map((user) => {
+            return (
+              <div key={user.id.toString()}>
+                <div>user-id : {user.id}</div>
+                <div>username : {user.username}</div>
+                <div>profile : {user.profile_text}</div>
+              </div>
+            );
+          })}
+        </div>
+      </Layout>
     </>
   );
 };
