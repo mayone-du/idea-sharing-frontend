@@ -21,7 +21,9 @@ const Create: React.VFC = () => {
         Authorization: `JWT ${cookie.get('access_token')}`
       }
     })
-
+    setTitle('');
+    setContents('');
+    
   }
 
   return (
@@ -34,8 +36,8 @@ const Create: React.VFC = () => {
             action=""
             onSubmit={(e) => {
               e.preventDefault();
-              console.log(title, contents)
               createIdea();
+
             }}
           >
           <div>
@@ -45,6 +47,7 @@ const Create: React.VFC = () => {
               onChange={(e) => {
                 setTitle(e.target.value);
               }}
+              value={title}
             />
           </div>
           <div>
@@ -55,6 +58,7 @@ const Create: React.VFC = () => {
               onChange={(e) => {
                 setContents(e.target.value);
               }}
+              value={contents}
             />
           </div>
           <div>
