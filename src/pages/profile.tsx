@@ -1,6 +1,6 @@
 import { getUsers } from "../lib/getUsers";
 import Cookie from "universal-cookie";
-import { TextField, Button } from '@material-ui/core';
+import { TextField, Button } from "@material-ui/core";
 import { Layout } from "../components/Layout";
 import { useEffect, useState } from "react";
 // import useSWR from 'swr';
@@ -14,15 +14,15 @@ type Users = [
 ];
 
 const Profile: React.VFC<{ users: Users }> = ({ users }) => {
-
-
-  
-  
   const cookie = new Cookie();
-  
-  const [profileText, setProfileText] = useState('');
+
+  const [profileText, setProfileText] = useState("");
   const [loginUser, setLoginUser] = useState([
-    { id: 0, username: "ユーザーネーム", profile_text: "よろしくおねがいします。" },
+    {
+      id: 0,
+      username: "ユーザーネーム",
+      profile_text: "よろしくおねがいします。",
+    },
   ]);
 
   // const fetcher: any = (url: string) => {fetch(url, {headers: {'Content-Type': 'application/json', Authorization: `JWT ${cookie.get('access_token')}`}}).then((res) => res.json())};
@@ -56,20 +56,28 @@ const Profile: React.VFC<{ users: Users }> = ({ users }) => {
     }
   };
 
-
-
   const updateProfileText = async () => {
-    await fetch(`${process.env.NEXT_PUBLIC_RESTAPI_URL}api/user-detail/${loginUser[0].id}/`,{
-      method: 'PUT',
-      body: JSON.stringify({ profile_text: profileText }),
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `JWT ${cookie.get('access_token')}`,
+    await fetch(
+      `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/user-detail/${loginUser[0].id}/`,
+      {
+        method: "PUT",
+        body: JSON.stringify({ profile_text: profileText }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `JWT ${cookie.get("access_token")}`,
+        },
       }
+    ).then((res) => {
+      if (res.status === 401) {
+        throw new Error('Unauthorized');
+      } else if (res.ok) {
+        setProfileText("");
+      }
+    }).catch((error) => {
+      alert(error);
     })
-    setProfileText('');
-  }
-
+    
+  };
 
   useEffect(() => {
     getMyProfile();
@@ -96,12 +104,22 @@ const Profile: React.VFC<{ users: Users }> = ({ users }) => {
 
         <div className="bg-gray-300">
           <TextField
-            variant='outlined'
-            label='profile_text'
-            onChange={(e) => {setProfileText(e.target.value)}}
+            variant="outlined"
+            label="profile_text"
+            onChange={(e) => {
+              setProfileText(e.target.value);
+            }}
             value={profileText}
           />
-          <Button variant='outlined' onClick={() => {updateProfileText(); setLoginUser([{...loginUser[0], profile_text: profileText}])   }}>UPDATE</Button>
+          <Button
+            variant="outlined"
+            onClick={() => {
+              updateProfileText();
+              setLoginUser([{ ...loginUser[0], profile_text: profileText }]);
+            }}
+          >
+            UPDATE
+          </Button>
         </div>
 
         <div>
@@ -129,7 +147,7 @@ const getStaticProps = async () => {
     props: {
       users,
       revalidate: 10,
-    }
+    },
   };
 };
 export { getStaticProps };
