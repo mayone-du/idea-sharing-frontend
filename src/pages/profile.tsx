@@ -57,26 +57,32 @@ const Profile: React.VFC<{ users: Users }> = ({ users }) => {
   };
 
   const updateProfileText = async () => {
-    await fetch(
-      `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/user-detail/${loginUser[0].id}/`,
-      {
-        method: "PUT",
-        body: JSON.stringify({ profile_text: profileText }),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `JWT ${cookie.get("access_token")}`,
-        },
-      }
-    ).then((res) => {
-      if (res.status === 401) {
-        throw new Error('Unauthorized');
-      } else if (res.ok) {
-        setProfileText("");
-      }
-    }).catch((error) => {
-      alert(error);
-    })
-    
+    try {
+      await fetch(
+        `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/user-detail/${loginUser[0].id}/`,
+        {
+          method: "PUT",
+          body: JSON.stringify({ profile_text: profileText }),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `JWT ${cookie.get("access_token")}`,
+          },
+        }
+      )
+        .then((res) => {
+          if (res.status === 401) {
+            throw new Error("Unauthorized");
+          } else if (res.ok) {
+            setProfileText("");
+            setLoginUser([{ ...loginUser[0], profile_text: profileText }]);
+          }
+        })
+        .catch((error) => {
+          alert(error);
+        });
+    } catch (error) {
+      alert("try-catch : " + error);
+    }
   };
 
   useEffect(() => {
@@ -114,8 +120,12 @@ const Profile: React.VFC<{ users: Users }> = ({ users }) => {
           <Button
             variant="outlined"
             onClick={() => {
+              if (profileText === "") {
+                alert("文字を入力してください。");
+                return;
+              }
               updateProfileText();
-              setLoginUser([{ ...loginUser[0], profile_text: profileText }]);
+              // setLoginUser([{ ...loginUser[0], profile_text: profileText }]);
             }}
           >
             UPDATE

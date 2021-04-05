@@ -11,13 +11,7 @@ const AuthForm: React.VFC<{ isLogin: boolean }> = ({ isLogin }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const usernameChange = (e: any) => {
-    setUsername(e.target.value);
-  };
 
-  const passwordChange = (e: any) => {
-    setPassword(e.target.value);
-  };
 
   const login = async () => {
     await fetch(`${process.env.NEXT_PUBLIC_RESTAPI_URL}api/auth/jwt/create/`, {
@@ -29,7 +23,7 @@ const AuthForm: React.VFC<{ isLogin: boolean }> = ({ isLogin }) => {
     })
       .then((res) => {
         if (res.status === 401) {
-          throw new Error("non_fields_error");
+          throw new Error("401 Unauthorized\n");
         } else if (res.ok) {
           return res.json();
         }
@@ -40,6 +34,8 @@ const AuthForm: React.VFC<{ isLogin: boolean }> = ({ isLogin }) => {
         cookie.set("access_token", data.access, accessOptions);
         cookie.set("refresh_token", data.refresh, refreshOptions);
         router.push("/");
+      }).catch((error) => {
+        alert(error + '入力されたユーザーネームとパスワードが一致しない可能性があります。');
       });
   };
 
@@ -50,8 +46,15 @@ const AuthForm: React.VFC<{ isLogin: boolean }> = ({ isLogin }) => {
       headers: {
         "Content-Type": "application/json",
       },
-    });
-    login();
+    }).then((res) => {
+      if (res.status === 400) {
+        throw new Error('400 Bad Request\n');
+      } else if (res.ok) {
+        login();
+      }
+    }).catch((error) => {
+      alert(error + '入力したユーザーネームは既に登録されている可能性があります。');
+    })
   };
 
   return (
@@ -73,7 +76,8 @@ const AuthForm: React.VFC<{ isLogin: boolean }> = ({ isLogin }) => {
             type="text"
             placeholder="username"
             variant="outlined"
-            onChange={usernameChange}
+            onChange={(e) => {setUsername(e.target.value)}}
+            value={username}
           />
         </div>
         <div className="m-10">
@@ -82,7 +86,8 @@ const AuthForm: React.VFC<{ isLogin: boolean }> = ({ isLogin }) => {
             type="password"
             placeholder="password"
             variant="outlined"
-            onChange={passwordChange}
+            onChange={(e) => {setPassword(e.target.value)}}
+            value={password}
           />
         </div>
 
