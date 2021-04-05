@@ -3,6 +3,7 @@ import Cookie from "universal-cookie";
 import { TextField, Button } from "@material-ui/core";
 import { Layout } from "../components/Layout";
 import { useEffect, useState } from "react";
+import { getMyProfile } from '../lib/getMyProfile';
 // import useSWR from 'swr';
 
 type Users = [
@@ -20,8 +21,8 @@ const Profile: React.VFC<{ users: Users }> = ({ users }) => {
   const [loginUser, setLoginUser] = useState([
     {
       id: 0,
-      username: "ユーザーネーム",
-      profile_text: "よろしくおねがいします。",
+      username: "guest",
+      profile_text: "default-value",
     },
   ]);
 
@@ -32,29 +33,31 @@ const Profile: React.VFC<{ users: Users }> = ({ users }) => {
 
   // console.log('newProfile:', newProfile)
 
-  const getMyProfile = async () => {
-    try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/my-profile/`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `JWT ${cookie.get("access_token")}`,
-          },
-        }
-      );
-      if (res.ok) {
-        const profile = await res.json();
-        setLoginUser(profile);
-        return profile;
-      } else if (res.status === 401) {
-        throw new Error("認証情報が含まれていないか、期限が切れています。");
-      }
-    } catch (err) {
-      alert("ログインされていないか、認証が切れています。");
-    }
-  };
+
+  // const getMyProfile = async () => {
+  //   try {
+  //     const res = await fetch(
+  //       `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/my-profile/`,
+  //       {
+  //         method: "GET",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `JWT ${cookie.get("access_token")}`,
+  //         },
+  //       }
+  //     );
+  //     if (res.ok) {
+  //       const profile = await res.json();
+  //       setLoginUser(profile);
+  //       return profile;
+  //     } else if (res.status === 401) {
+  //       alert("認証情報が含まれていないか、期限が切れています。");
+  //       return;
+  //     }
+  //   } catch (err) {
+  //     alert("ログインされていないか、認証が切れています。");
+  //   }
+  // };
 
   const updateProfileText = async () => {
     try {
@@ -86,7 +89,7 @@ const Profile: React.VFC<{ users: Users }> = ({ users }) => {
   };
 
   useEffect(() => {
-    getMyProfile();
+    getMyProfile(setLoginUser, cookie);
     // mutate();
   }, []);
 
