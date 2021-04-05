@@ -1,10 +1,9 @@
 import { getUsers } from "../lib/getUsers";
 import Cookie from "universal-cookie";
-
-const cookie = new Cookie();
-
+import { TextField, Button } from '@material-ui/core';
 import { Layout } from "../components/Layout";
 import { useEffect, useState } from "react";
+// import { useSWR } from 'swr';
 
 type Users = [
   {
@@ -15,8 +14,13 @@ type Users = [
 ];
 
 const Profile: React.VFC<{ users: Users }> = ({ users }) => {
+
+
+  const cookie = new Cookie();
+  
+  const [profileText, setProfileText] = useState('');
   const [loginUser, setLoginUser] = useState([
-    { id: 0, username: "", profile_text: "" },
+    { id: 0, username: "ユーザーネーム", profile_text: "よろしくおねがいします。" },
   ]);
 
   const getMyProfile = async () => {
@@ -32,25 +36,30 @@ const Profile: React.VFC<{ users: Users }> = ({ users }) => {
         }
       );
       if (res.ok) {
-        // console.log(res);
         const profile = await res.json();
         setLoginUser(profile);
-        // console.log(profile);
         return profile;
       } else if (res.status === 401) {
         throw new Error("認証情報が含まれていないか、期限が切れています。");
       }
     } catch (err) {
       alert("ログインされていないか、認証が切れています。");
-      // return [
-      //   {
-      //     id: 88,
-      //     username: '',
-      //     profile_text: '',
-      //   }
-      // ]
     }
   };
+
+
+
+  const updateProfileText = async () => {
+    await fetch(`${process.env.NEXT_PUBLIC_RESTAPI_URL}api/user-detail/${loginUser[0].id}/`,{
+      method: 'PUT',
+      body: JSON.stringify({ profile_text: profileText }),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `JWT ${cookie.get('access_token')}`,
+      }
+    })
+  }
+
 
   useEffect(() => {
     getMyProfile();
@@ -72,6 +81,16 @@ const Profile: React.VFC<{ users: Users }> = ({ users }) => {
               </div>
             );
           })}
+        </div>
+
+        <div className="bg-gray-300">
+          <TextField
+            variant='outlined'
+            label='profile_text'
+            onChange={(e) => {setProfileText(e.target.value)}}
+            value={profileText}
+          />
+          <Button variant='outlined' onClick={updateProfileText}>UPDATE</Button>
         </div>
 
         <div>
