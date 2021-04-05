@@ -59,8 +59,6 @@ const Home: React.FC<{ ideas: Ideas; comments: Comments }> = ({
 
 
 
-
-
   return (
     <>
     <Layout

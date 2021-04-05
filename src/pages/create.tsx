@@ -18,21 +18,29 @@ const Create: React.VFC = () => {
     },
   ]);
 
-  const [title, setTitle] = useState("");
-  const [contents, setContents] = useState("");
+
+  const [newIdea, setNewIdea] = useState({title: '', contents: '', createuser: 3, isPublished: false})
+
 
 
   const createIdea = async () => {
     await fetch(`${process.env.NEXT_PUBLIC_RESTAPI_URL}api/idea/`,{
-      method: 'POSt',
-      body: JSON.stringify({ title: title, contents: contents, createuser: 1, is_published: false, }),
+      method: 'POST',
+      // body: JSON.stringify({ title: newIdea.title, contents: newIdea.contents, createuser: newIdea.createuser, is_published: newIdea.isPublished, }),
+      body: JSON.stringify(newIdea),
       headers: {
         'Content-Type': 'application/json',
         Authorization: `JWT ${cookie.get('access_token')}`
       }
+    }).then((res) => {
+      if (res.status === 401) {
+        throw new Error('401 Unauthorized\n')
+      } else if (res.ok) {
+        setNewIdea({...newIdea, title: '', contents: '', isPublished: false});
+      }
+    }).catch((error) => {
+      alert(error + 'エラー');
     })
-    setTitle('');
-    setContents('');
   }
 
 
@@ -40,7 +48,6 @@ const Create: React.VFC = () => {
     getMyProfile(setLoginUser, cookie);
     console.log(loginUser);
   }, [])
-  // console.log(loginUser);
 
 
 
@@ -69,20 +76,19 @@ const Create: React.VFC = () => {
               variant="outlined"
               label="title"
               onChange={(e) => {
-                setTitle(e.target.value);
+                setNewIdea({...newIdea, title: e.target.value});
               }}
-              value={title}
+              value={newIdea.title}
             />
           </div>
           <div>
             <TextField
-              rows={4}
               variant="outlined"
               label="contents"
               onChange={(e) => {
-                setContents(e.target.value);
+                setNewIdea({...newIdea, contents: e.target.value});
               }}
-              value={contents}
+              value={newIdea.contents}
             />
           </div>
           <div>
