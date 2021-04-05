@@ -3,7 +3,7 @@ import Cookie from "universal-cookie";
 import { TextField, Button } from '@material-ui/core';
 import { Layout } from "../components/Layout";
 import { useEffect, useState } from "react";
-// import { useSWR } from 'swr';
+// import useSWR from 'swr';
 
 type Users = [
   {
@@ -16,12 +16,21 @@ type Users = [
 const Profile: React.VFC<{ users: Users }> = ({ users }) => {
 
 
+  
+  
   const cookie = new Cookie();
   
   const [profileText, setProfileText] = useState('');
   const [loginUser, setLoginUser] = useState([
     { id: 0, username: "ユーザーネーム", profile_text: "よろしくおねがいします。" },
   ]);
+
+  // const fetcher: any = (url: string) => {fetch(url, {headers: {'Content-Type': 'application/json', Authorization: `JWT ${cookie.get('access_token')}`}}).then((res) => res.json())};
+  // const apiUrl = `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/my-profile/`;
+
+  // const { data: newProfile, mutate }: any = useSWR(apiUrl, fetcher, { initialData: loginUser, })
+
+  // console.log('newProfile:', newProfile)
 
   const getMyProfile = async () => {
     try {
@@ -58,11 +67,13 @@ const Profile: React.VFC<{ users: Users }> = ({ users }) => {
         Authorization: `JWT ${cookie.get('access_token')}`,
       }
     })
+    setProfileText('');
   }
 
 
   useEffect(() => {
     getMyProfile();
+    // mutate();
   }, []);
 
   return (
@@ -90,7 +101,7 @@ const Profile: React.VFC<{ users: Users }> = ({ users }) => {
             onChange={(e) => {setProfileText(e.target.value)}}
             value={profileText}
           />
-          <Button variant='outlined' onClick={updateProfileText}>UPDATE</Button>
+          <Button variant='outlined' onClick={() => {updateProfileText(); setLoginUser([{...loginUser[0], profile_text: profileText}])   }}>UPDATE</Button>
         </div>
 
         <div>
@@ -114,6 +125,11 @@ export default Profile;
 
 const getStaticProps = async () => {
   const users = await getUsers();
-  return users;
+  return {
+    props: {
+      users,
+      revalidate: 10,
+    }
+  };
 };
 export { getStaticProps };
