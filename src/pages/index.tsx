@@ -1,6 +1,7 @@
 import { Layout } from "../components/Layout";
 import { getIdeas } from "../lib/getIdeas";
 import { getComments } from "../lib/getComments";
+import { getIdeaIds } from "../lib/getIdeaIds";
 import { useEffect, useState } from "react";
 // import { GetStaticProps } from "next";
 
