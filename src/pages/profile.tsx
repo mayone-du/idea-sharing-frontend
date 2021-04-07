@@ -14,7 +14,7 @@ type Users = [
   }
 ];
 
-const Profile: React.VFC<{ users: Users }> = ({ users }) => {
+const Profile: React.VFC<{ users: Users, testState: string, setTestState: any }> = ({ users, testState, setTestState }) => {
   const cookie = new Cookie();
 
   const [profileText, setProfileText] = useState("");
@@ -90,6 +90,7 @@ const Profile: React.VFC<{ users: Users }> = ({ users }) => {
 
   useEffect(() => {
     getMyProfile(setLoginUser, cookie);
+    console.log( 'profile :' + testState)
     // mutate();
   }, []);
 

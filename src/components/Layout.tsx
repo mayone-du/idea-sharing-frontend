@@ -42,6 +42,11 @@ const Layout: React.FC<{ children?: React.ReactNode; metaTitle: string, loginUse
                   <a>create</a>
                 </Link>
               </li>
+              <li className='m-2 text-blue-400'>
+                <Link href="/test">
+                  <a>test</a>
+                </Link>
+              </li>
               <li>
                 {loginUser ? loginUser[0].id : 0}
               </li>
