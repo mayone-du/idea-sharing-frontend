@@ -55,5 +55,3 @@ export type Comments = [
     created_at: string;
   }
 ];
-
-// TODO export type refactoring

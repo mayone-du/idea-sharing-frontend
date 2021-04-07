@@ -1,9 +1,9 @@
 import { Layout } from "../components/Layout";
 import { getIdeas } from "../lib/getIdeas";
 import { getComments } from "../lib/getComments";
-import { getIdeaIds } from "../lib/getIdeaIds";
-import { SetStateAction, useEffect, useState } from "react";
-import { Ideas, Comments, LoginUser } from '../types/types';
+import { useEffect, useContext } from "react";
+import { Ideas, Comments, } from '../types/types';
+import { LoginUserContext } from '../contexts/LoginUserContext';
 // import { GetStaticProps } from "next";
 
 
@@ -11,9 +11,9 @@ import { Ideas, Comments, LoginUser } from '../types/types';
 const Home: React.FC<{
   sortedIdeas: Ideas;
   comments: Comments;
-  loginUser: LoginUser;
-  setLoginUser: any;
-}> = ({ sortedIdeas, comments, loginUser, setLoginUser }) => {
+  // loginUser: LoginUser;
+  // setLoginUser: any;
+}> = ({ sortedIdeas, comments, }) => {
   // const [isLogin, setIsLogin] = useState(false);
   // const [username, setUsername] = useState('')
   // const [password, setPassword] = useState('')
@@ -37,12 +37,17 @@ const Home: React.FC<{
   //   console.log(sortedIdeas);
   // }, []);
 
+
+  const {loginUser, setLoginUser} = useContext(LoginUserContext);
+
   useEffect(() => {
-    console.log("effect first" + loginUser);
-    setLoginUser({...loginUser, username: 'index',});
-    console.log(loginUser);
+    console.log('effect first: ' + loginUser)
+    setLoginUser({id: 83, username: 'hoge', profileText: 'hogehogehogehogeohge'})
   }, []);
+
+  console.log('normal: ' + loginUser);
   console.log(loginUser);
+  
 
   return (
     <>

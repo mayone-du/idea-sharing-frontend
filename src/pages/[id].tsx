@@ -5,7 +5,7 @@ import { Idea } from '../types/types';
 
 
 
-const Idea: React.VFC<{ idea: Idea }> = ({idea}) => {
+const DetailIdea: React.VFC<{ idea: Idea }> = ({idea}) => {
   
   return (
     <>
@@ -31,7 +31,7 @@ const Idea: React.VFC<{ idea: Idea }> = ({idea}) => {
   )
 }
 
-export default Idea;
+export default DetailIdea;
 
 const getStaticPaths = async () => {
   const paths = await getIdeaIds();
