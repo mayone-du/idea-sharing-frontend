@@ -1,9 +1,17 @@
 import Head from "next/head";
 import Link from "next/link";
 
-const Layout: React.FC<{ children?: React.ReactNode; metaTitle: string }> = ({
+
+type LoginUser = {
+  id: number;
+  username: string;
+  profile_text: string;
+}[];
+
+const Layout: React.FC<{ children?: React.ReactNode; metaTitle: string, loginUser?: LoginUser }> = ({
   children,
   metaTitle,
+  loginUser,
 }) => {
   return (
     <>
@@ -33,6 +41,9 @@ const Layout: React.FC<{ children?: React.ReactNode; metaTitle: string }> = ({
                 <Link href="/create">
                   <a>create</a>
                 </Link>
+              </li>
+              <li>
+                {loginUser ? loginUser[0].id : 0}
               </li>
             </ul>
           </nav>

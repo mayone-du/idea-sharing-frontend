@@ -1,15 +1,38 @@
 import { getIdeaIds } from '../lib/getIdeaIds';
 import { getIdeaDetail } from '../lib/getIdeaDetail';
+import { Layout } from '../components/Layout';
 
-const Idea: React.VFC<{ idea: any }> = ({idea}) => {
-  console.log(idea);
+type Idea = {
+  id: number,
+  title: string,
+  contents: string,
+  createuser: number,
+  created_at: string,
+  updated_at: string,
+}
+
+const Idea: React.VFC<{ idea: Idea }> = ({idea}) => {
   
   return (
     <>
+    <Layout metaTitle={`${idea.title}`} >
       <h1>{idea.id}</h1>
       <div>
         {idea.title}
       </div>
+      <div>
+        {idea.contents}
+      </div>
+      <div>
+        createuser = {idea.createuser}
+      </div>
+      <div>
+        {idea.created_at}
+      </div>
+      <div>
+        {idea.updated_at}
+      </div>
+    </Layout>
     </>
   )
 }

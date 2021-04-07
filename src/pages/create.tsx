@@ -56,7 +56,7 @@ const Create: React.VFC = () => {
 
   return (
     <>
-      <Layout metaTitle="create">
+      <Layout metaTitle="create" loginUser={loginUser}>
         <h1 className="text-center text-4xl font-bold">create</h1>
         <div>
           {loginUser[0].id}
@@ -100,6 +100,7 @@ const Create: React.VFC = () => {
             <div>
               <Switch
                 value={newIdea.isPublished}
+                color='primary'
                 onChange={(e) => {
                   setNewIdea({ ...newIdea, isPublished: !newIdea.isPublished });
                 }}

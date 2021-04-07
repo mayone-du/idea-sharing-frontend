@@ -5,13 +5,25 @@ import { getIdeaIds } from "../lib/getIdeaIds";
 import { useEffect, useState } from "react";
 // import { GetStaticProps } from "next";
 
+type ParsedComments = [
+  {
+    fields: {
+      comment: string,
+      comment_user: number,
+      created_at: string,
+      idea: number,
+    }
+  }
+]
+
 type Ideas = [
   {
     id: number;
     title: string;
     contents: string;
     is_published: boolean;
-    createuser: any;
+    createuser: number;
+    comments: string;
     created_at: string;
     updated_at: string;
   }
@@ -50,9 +62,13 @@ const Home: React.FC<{ sortedIdeas: Ideas; comments: Comments }> = ({
   //   })
   // }
 
-  useEffect(() => {
-    console.log(sortedIdeas);
-  }, []);
+  // useEffect(() => {
+  //   console.log(sortedIdeas);
+  // }, []);
+
+
+  
+
 
   return (
     <>
@@ -67,6 +83,11 @@ const Home: React.FC<{ sortedIdeas: Ideas; comments: Comments }> = ({
                 <div>contents - {idea.contents}</div>
                 <div>is_published - {idea.is_published.toString()}</div>
                 <div>createuser - {idea.createuser.toString()}</div>
+                <div>commentCount - {JSON.parse(idea.comments).length}</div>
+                {/* <div>commentCount - {JSON.parse(idea.comments)[0].length ? JSON.parse(idea.comments).length : 0 }</div> */}
+                {/* <div>comments - {JSON.parse(idea.comments)[0] ? JSON.parse(idea.comments).map((item: any, index: number) => index) : 0 }</div> */}
+                {/* {console.log(JSON.parse(idea.comments)[0] ? JSON.parse(idea.comments).map((item: any) => item.fields) : null )} */}
+                {/* {console.log(JSON.parse(idea.comments)[0] ? JSON.parse(idea.comments)[0].fields : null )} */}
                 <div>created_at - {idea.created_at}</div>
                 <div>updated_at - {idea.updated_at}</div>
               </div>
