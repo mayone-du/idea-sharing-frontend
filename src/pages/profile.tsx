@@ -4,15 +4,10 @@ import { TextField, Button } from "@material-ui/core";
 import { Layout } from "../components/Layout";
 import { useEffect, useState } from "react";
 import { getMyProfile } from '../lib/getMyProfile';
+import { Users } from '../types/types';
 // import useSWR from 'swr';
 
-type Users = [
-  {
-    id: number;
-    username: string;
-    profile_text: string;
-  }
-];
+
 
 const Profile: React.VFC<{ users: Users, testState: string, setTestState: any }> = ({ users, testState, setTestState }) => {
   const cookie = new Cookie();

@@ -3,47 +3,10 @@ import { getIdeas } from "../lib/getIdeas";
 import { getComments } from "../lib/getComments";
 import { getIdeaIds } from "../lib/getIdeaIds";
 import { SetStateAction, useEffect, useState } from "react";
+import { Ideas, Comments, LoginUser } from '../types/types';
 // import { GetStaticProps } from "next";
 
-type ParsedComments = [
-  {
-    fields: {
-      comment: string;
-      comment_user: number;
-      created_at: string;
-      idea: number;
-    };
-  }
-];
 
-type Ideas = [
-  {
-    id: number;
-    title: string;
-    contents: string;
-    is_published: boolean;
-    createuser: number;
-    comments: string;
-    created_at: string;
-    updated_at: string;
-  }
-];
-
-type Comments = [
-  {
-    id: number;
-    idea: number;
-    comment: string;
-    comment_user: number;
-    created_at: string;
-  }
-];
-
-type LoginUser = {
-  id: number;
-  username: string;
-  profileText: string;
-};
 
 const Home: React.FC<{
   sortedIdeas: Ideas;

@@ -1,15 +1,9 @@
 import { getIdeaIds } from '../lib/getIdeaIds';
 import { getIdeaDetail } from '../lib/getIdeaDetail';
 import { Layout } from '../components/Layout';
+import { Idea } from '../types/types';
 
-type Idea = {
-  id: number,
-  title: string,
-  contents: string,
-  createuser: number,
-  created_at: string,
-  updated_at: string,
-}
+
 
 const Idea: React.VFC<{ idea: Idea }> = ({idea}) => {
   
