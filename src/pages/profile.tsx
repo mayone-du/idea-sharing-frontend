@@ -2,24 +2,20 @@ import { getUsers } from "../lib/getUsers";
 import Cookie from "universal-cookie";
 import { TextField, Button } from "@material-ui/core";
 import { Layout } from "../components/Layout";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { getMyProfile } from '../lib/getMyProfile';
+import { LoginUserContext } from '../contexts/LoginUserContext';
 import { Users } from '../types/types';
 // import useSWR from 'swr';
 
 
 
-const Profile: React.VFC<{ users: Users, testState: string, setTestState: any }> = ({ users, testState, setTestState }) => {
+const Profile: React.VFC<{ users: Users }> = ({ users }) => {
   const cookie = new Cookie();
 
   const [profileText, setProfileText] = useState("");
-  const [loginUser, setLoginUser] = useState(
-    {
-      id: 0,
-      username: "guest",
-      profile_text: "default-value",
-    },
-);
+
+  const {loginUser, setLoginUser} = useContext(LoginUserContext);
 
   // const fetcher: any = (url: string) => {fetch(url, {headers: {'Content-Type': 'application/json', Authorization: `JWT ${cookie.get('access_token')}`}}).then((res) => res.json())};
   // const apiUrl = `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/my-profile/`;
@@ -84,8 +80,9 @@ const Profile: React.VFC<{ users: Users, testState: string, setTestState: any }>
   };
 
   useEffect(() => {
-    getMyProfile(setLoginUser, cookie);
-    console.log( 'profile :' + testState)
+    console.log('profile page mount');
+    
+    // getMyProfile(setLoginUser, cookie);
     // mutate();
   }, []);
 

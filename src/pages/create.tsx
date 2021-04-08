@@ -1,19 +1,14 @@
 import { Layout } from "../components/Layout";
 import { TextField, Button, Switch } from "@material-ui/core";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Cookie from "universal-cookie";
 import { getMyProfile } from "../lib/getMyProfile";
+import { LoginUserContext } from '../contexts/LoginUserContext';
 
 const Create: React.VFC = () => {
   const cookie = new Cookie();
 
-  const [loginUser, setLoginUser] = useState([
-    {
-      id: 0,
-      username: "guest",
-      profile_text: "default-value",
-    },
-  ]);
+  const {loginUser, setLoginUser} = useContext(LoginUserContext);
 
   const [newIdea, setNewIdea] = useState({
     title: "",
@@ -50,7 +45,6 @@ const Create: React.VFC = () => {
   };
 
   useEffect(() => {
-    getMyProfile(setLoginUser, cookie);
     console.log(loginUser);
   }, []);
 
@@ -59,11 +53,11 @@ const Create: React.VFC = () => {
       <Layout metaTitle="create" loginUser={loginUser}>
         <h1 className="text-center text-4xl font-bold">create</h1>
         <div>
-          {loginUser[0].id}
+          {loginUser.id}
           <br />
-          {loginUser[0].username}
+          {loginUser.username}
           <br />
-          {loginUser[0].profile_text}
+          {loginUser.profile_text}
         </div>
         <div className="m-10">
           <form

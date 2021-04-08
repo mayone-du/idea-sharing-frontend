@@ -1,12 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
+import { LoginUser } from '../types/types';
 
-
-type LoginUser = {
-  id: number;
-  username: string;
-  profile_text: string;
-}[];
 
 const Layout: React.FC<{ children?: React.ReactNode; metaTitle: string, loginUser?: LoginUser }> = ({
   children,
@@ -48,7 +43,7 @@ const Layout: React.FC<{ children?: React.ReactNode; metaTitle: string, loginUse
                 </Link>
               </li>
               <li>
-                {loginUser ? loginUser[0].id : 0}
+                {loginUser ? loginUser.id : 0}
               </li>
             </ul>
           </nav>

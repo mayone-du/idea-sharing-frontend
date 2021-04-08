@@ -43,7 +43,7 @@ const Home: React.FC<{
     console.log('effect first: ' + loginUser);
     setLoginUser({id: 83, username: 'hoge', profileText: 'hogehogehogehogeohge'})
   }, []);
-
+  console.log(loginUser)
   
 
   return (
