@@ -45,7 +45,6 @@ const Home: React.FC<{
     console.log(loginUser);
     console.groupEnd();
     if (loginUser.id !== 0) return;
-    getMyProfile(setLoginUser);
   }, []);
   
   

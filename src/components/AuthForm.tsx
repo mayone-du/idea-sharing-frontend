@@ -67,6 +67,14 @@ const AuthForm: React.VFC<{ isLogin: boolean }> = ({ isLogin }) => {
       });
   };
 
+
+  const logout = () => {
+    cookie.remove("access_token");
+    cookie.remove("refresh_token");
+    setLoginUser({ id: 0, username: '', profileText: '',});
+    router.push("/");
+  }
+
   return (
     <>
       <form
@@ -113,12 +121,7 @@ const AuthForm: React.VFC<{ isLogin: boolean }> = ({ isLogin }) => {
         <div className="m-4">
           <Button
             variant="contained"
-            onClick={() => {
-              cookie.remove("access_token");
-              cookie.remove("refresh_token");
-              setLoginUser({});
-              router.push("/");
-            }}
+            onClick={logout}
           >
             logout
           </Button>

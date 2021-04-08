@@ -1,13 +1,4 @@
-import Cookie from 'universal-cookie';
-const cookie = new Cookie();
-const accessToken = cookie.get('access_token');
-const refreshToken = cookie.get('refresh_token');
-
-const getMyProfile = async (setStateFn: Function) => {
-  if (!accessToken && !refreshToken) {
-    alert('tokens none');
-    return;
-  };
+const getMyProfile = async (setStateFn: Function, cookieInstance: any) => {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/my-profile/`,
@@ -15,7 +6,7 @@ const getMyProfile = async (setStateFn: Function) => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `JWT ${cookie.get("access_token")}`,
+          Authorization: `JWT ${cookieInstance.get("access_token")}`,
         },
       }
     );
