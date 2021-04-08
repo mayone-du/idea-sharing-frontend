@@ -4,6 +4,7 @@ import { getComments } from "../lib/getComments";
 import { useEffect, useContext } from "react";
 import { Ideas, Comments, } from '../types/types';
 import { LoginUserContext } from '../contexts/LoginUserContext';
+import { getMyProfile } from "../lib/getMyProfile";
 
 
 
@@ -40,16 +41,19 @@ const Home: React.FC<{
   const {loginUser, setLoginUser} = useContext(LoginUserContext);
 
   useEffect(() => {
-    console.log('effect first: ' + loginUser);
-    setLoginUser({id: 83, username: 'hoge', profileText: 'hogehogehogehogeohge'})
+    console.group('index mount');
+    console.log(loginUser);
+    console.groupEnd();
+    if (loginUser.id !== 0) return;
+    getMyProfile(setLoginUser);
   }, []);
-  console.log(loginUser)
+  
   
 
   return (
     <>
       <Layout metaTitle="HOME">
-        <h1>Hello, World!!</h1>
+        <h1 className='text-4xl text-center m-10'>{loginUser.id}</h1>
         <div>
           {sortedIdeas.map((idea) => {
             return (

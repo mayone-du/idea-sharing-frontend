@@ -1,17 +1,18 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { TextField, Button } from "@material-ui/core";
 import Cookie from "universal-cookie";
 import { useRouter } from "next/router";
-
-const cookie = new Cookie();
+import { LoginUserContext } from "../contexts/LoginUserContext";
+import { getMyProfile } from "../lib/getMyProfile";
 
 const AuthForm: React.VFC<{ isLogin: boolean }> = ({ isLogin }) => {
+  const cookie = new Cookie();
   const router = useRouter();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-
+  const { loginUser, setLoginUser } = useContext(LoginUserContext);
 
   const login = async () => {
     await fetch(`${process.env.NEXT_PUBLIC_RESTAPI_URL}api/auth/jwt/create/`, {
@@ -33,9 +34,14 @@ const AuthForm: React.VFC<{ isLogin: boolean }> = ({ isLogin }) => {
         const refreshOptions = { path: "/", maxAge: 60 * 60 * 24 * 7 };
         cookie.set("access_token", data.access, accessOptions);
         cookie.set("refresh_token", data.refresh, refreshOptions);
+        // getMyProfile(setLoginUser);
         router.push("/");
-      }).catch((error) => {
-        alert(error + '入力されたユーザーネームとパスワードが一致しない可能性があります。');
+      })
+      .catch((error) => {
+        alert(
+          error +
+            "入力されたユーザーネームとパスワードが一致しない可能性があります。"
+        );
       });
   };
 
@@ -46,15 +52,19 @@ const AuthForm: React.VFC<{ isLogin: boolean }> = ({ isLogin }) => {
       headers: {
         "Content-Type": "application/json",
       },
-    }).then((res) => {
-      if (res.status === 400) {
-        throw new Error('400 Bad Request\n');
-      } else if (res.ok) {
-        login();
-      }
-    }).catch((error) => {
-      alert(error + '入力したユーザーネームは既に登録されている可能性があります。');
     })
+      .then((res) => {
+        if (res.status === 400) {
+          throw new Error("400 Bad Request\n");
+        } else if (res.ok) {
+          login();
+        }
+      })
+      .catch((error) => {
+        alert(
+          error + "入力したユーザーネームは既に登録されている可能性があります。"
+        );
+      });
   };
 
   return (
@@ -76,7 +86,9 @@ const AuthForm: React.VFC<{ isLogin: boolean }> = ({ isLogin }) => {
             type="text"
             placeholder="username"
             variant="outlined"
-            onChange={(e) => {setUsername(e.target.value)}}
+            onChange={(e) => {
+              setUsername(e.target.value);
+            }}
             value={username}
           />
         </div>
@@ -86,7 +98,9 @@ const AuthForm: React.VFC<{ isLogin: boolean }> = ({ isLogin }) => {
             type="password"
             placeholder="password"
             variant="outlined"
-            onChange={(e) => {setPassword(e.target.value)}}
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
             value={password}
           />
         </div>
@@ -102,7 +116,8 @@ const AuthForm: React.VFC<{ isLogin: boolean }> = ({ isLogin }) => {
             onClick={() => {
               cookie.remove("access_token");
               cookie.remove("refresh_token");
-              router.push('/');
+              setLoginUser({});
+              router.push("/");
             }}
           >
             logout
