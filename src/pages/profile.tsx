@@ -13,13 +13,13 @@ const Profile: React.VFC<{ users: Users, testState: string, setTestState: any }>
   const cookie = new Cookie();
 
   const [profileText, setProfileText] = useState("");
-  const [loginUser, setLoginUser] = useState([
+  const [loginUser, setLoginUser] = useState(
     {
       id: 0,
       username: "guest",
       profile_text: "default-value",
     },
-  ]);
+);
 
   // const fetcher: any = (url: string) => {fetch(url, {headers: {'Content-Type': 'application/json', Authorization: `JWT ${cookie.get('access_token')}`}}).then((res) => res.json())};
   // const apiUrl = `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/my-profile/`;
@@ -57,7 +57,7 @@ const Profile: React.VFC<{ users: Users, testState: string, setTestState: any }>
   const updateProfileText = async () => {
     try {
       await fetch(
-        `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/user-detail/${loginUser[0].id}/`,
+        `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/user-detail/${loginUser.id}/`,
         {
           method: "PUT",
           body: JSON.stringify({ profile_text: profileText }),
@@ -72,7 +72,7 @@ const Profile: React.VFC<{ users: Users, testState: string, setTestState: any }>
             throw new Error("Unauthorized");
           } else if (res.ok) {
             setProfileText("");
-            setLoginUser([{ ...loginUser[0], profile_text: profileText }]);
+            setLoginUser({ ...loginUser, profile_text: profileText });
           }
         })
         .catch((error) => {
@@ -96,15 +96,15 @@ const Profile: React.VFC<{ users: Users, testState: string, setTestState: any }>
 
         <div className="m-40">
           <h2 className="text-3xl text-center mt-20">my profile</h2>
-          {loginUser.map((item, index) => {
-            return (
-              <div key={index.toString()}>
-                <p>{item.id}</p>
-                <p>{item.username}</p>
-                <p>{item.profile_text}</p>
-              </div>
-            );
-          })}
+          <div>
+            {loginUser.id}
+          </div>
+          <div>
+            {loginUser.username}
+          </div>
+          <div>
+          {loginUser.profile_text}
+          </div>
         </div>
 
         <div className="bg-gray-300">

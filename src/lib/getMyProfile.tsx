@@ -11,7 +11,7 @@ const getMyProfile = async (setStateFn: Function, cookieInstance: any) => {
       }
     );
     if (res.ok) {
-      const profile = await res.json();
+      const [profile] = await res.json();
       setStateFn(profile);
       return profile;
     } else if (res.status === 401) {

@@ -4,7 +4,6 @@ import { getComments } from "../lib/getComments";
 import { useEffect, useContext } from "react";
 import { Ideas, Comments, } from '../types/types';
 import { LoginUserContext } from '../contexts/LoginUserContext';
-// import { GetStaticProps } from "next";
 
 
 
@@ -41,12 +40,10 @@ const Home: React.FC<{
   const {loginUser, setLoginUser} = useContext(LoginUserContext);
 
   useEffect(() => {
-    console.log('effect first: ' + loginUser)
+    console.log('effect first: ' + loginUser);
     setLoginUser({id: 83, username: 'hoge', profileText: 'hogehogehogehogeohge'})
   }, []);
 
-  console.log('normal: ' + loginUser);
-  console.log(loginUser);
   
 
   return (
