@@ -3,7 +3,6 @@ import Cookie from "universal-cookie";
 import { TextField, Button } from "@material-ui/core";
 import { Layout } from "../components/Layout";
 import { useEffect, useState, useContext } from "react";
-import { getMyProfile } from '../lib/getMyProfile';
 import { LoginUserContext } from '../contexts/LoginUserContext';
 import { Users } from '../types/types';
 // import useSWR from 'swr';
@@ -88,7 +87,7 @@ const Profile: React.VFC<{ users: Users }> = ({ users }) => {
 
   return (
     <>
-      <Layout metaTitle="profile">
+      <Layout metaTitle="profile" activePage='PROFILE'>
         <h1 className="text-4xl text-center my-4">profile</h1>
 
         <div className="m-40">

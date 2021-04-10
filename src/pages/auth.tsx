@@ -5,10 +5,9 @@ import { AuthForm } from "../components/AuthForm";
 
 const Auth: React.VFC = () => {
   const [isLogin, setIsLogin] = useState(true);
-
   return (
     <>
-      <Layout metaTitle="auth">
+      <Layout metaTitle="auth" activePage='AUTH'>
         <div>
           <h1 className="text-4xl text-center my-4">ログイン・新規登録画面</h1>
           <Button
@@ -19,7 +18,6 @@ const Auth: React.VFC = () => {
           >
             changeMode
           </Button>
-
           <AuthForm isLogin={isLogin} />
         </div>
       </Layout>

@@ -9,7 +9,7 @@ const DetailIdea: React.VFC<{ idea: Idea }> = ({idea}) => {
   
   return (
     <>
-    <Layout metaTitle={`${idea.title}`} >
+    <Layout metaTitle={`${idea.title}`} activePage='OTHERS' >
       <h1>{idea.id}</h1>
       <div>
         {idea.title}

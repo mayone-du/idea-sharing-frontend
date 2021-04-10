@@ -55,3 +55,6 @@ export type Comments = [
     created_at: string;
   }
 ];
+
+
+export type LayoutActivePage = 'HOME' | 'AUTH' | 'PROFILE' | 'CREATE' | 'TEST' | 'OTHERS';

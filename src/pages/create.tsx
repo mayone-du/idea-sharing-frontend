@@ -2,7 +2,6 @@ import { Layout } from "../components/Layout";
 import { TextField, Button, Switch } from "@material-ui/core";
 import { useContext, useEffect, useState } from "react";
 import Cookie from "universal-cookie";
-import { getMyProfile } from "../lib/getMyProfile";
 import { LoginUserContext } from '../contexts/LoginUserContext';
 
 const Create: React.VFC = () => {
@@ -13,14 +12,13 @@ const Create: React.VFC = () => {
   const [newIdea, setNewIdea] = useState({
     title: "",
     contents: "",
-    createuser: 3,
+    createuser: loginUser.id || 0,
     isPublished: false,
   });
 
   const createIdea = async () => {
     await fetch(`${process.env.NEXT_PUBLIC_RESTAPI_URL}api/idea/`, {
       method: "POST",
-      // body: JSON.stringify({ title: newIdea.title, contents: newIdea.contents, createuser: newIdea.createuser, is_published: newIdea.isPublished, }),
       body: JSON.stringify(newIdea),
       headers: {
         "Content-Type": "application/json",
@@ -50,7 +48,7 @@ const Create: React.VFC = () => {
 
   return (
     <>
-      <Layout metaTitle="create" loginUser={loginUser}>
+      <Layout metaTitle="create" activePage='CREATE'>
         <h1 className="text-center text-4xl font-bold">create</h1>
         <div>
           {loginUser.id}
@@ -85,6 +83,8 @@ const Create: React.VFC = () => {
               <TextField
                 variant="outlined"
                 label="contents"
+                multiline={true}
+                rows={4}
                 onChange={(e) => {
                   setNewIdea({ ...newIdea, contents: e.target.value });
                 }}

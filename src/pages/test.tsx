@@ -1,11 +1,10 @@
 import { Layout } from '../components/Layout';
 
-const Test: React.VFC<{ loginUser: any, setLoginUser: any}> = ({loginUser, setLoginUser}) => {
-  console.log(loginUser)
+const Test: React.VFC = () => {
   return (
     <>
-    <Layout metaTitle='test' >
-      {loginUser.username}
+    <Layout metaTitle='test' activePage='TEST' >
+      {'hoge'}
     </Layout>
       
     </>

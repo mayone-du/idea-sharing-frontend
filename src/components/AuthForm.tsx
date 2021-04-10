@@ -3,7 +3,6 @@ import { TextField, Button } from "@material-ui/core";
 import Cookie from "universal-cookie";
 import { useRouter } from "next/router";
 import { LoginUserContext } from "../contexts/LoginUserContext";
-import { getMyProfile } from "../lib/getMyProfile";
 
 const AuthForm: React.VFC<{ isLogin: boolean }> = ({ isLogin }) => {
   const cookie = new Cookie();
@@ -34,7 +33,37 @@ const AuthForm: React.VFC<{ isLogin: boolean }> = ({ isLogin }) => {
         const refreshOptions = { path: "/", maxAge: 60 * 60 * 24 * 7 };
         cookie.set("access_token", data.access, accessOptions);
         cookie.set("refresh_token", data.refresh, refreshOptions);
-        // getMyProfile(setLoginUser);
+        
+        (async () => {
+          try {
+            const res = await fetch(
+              `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/my-profile/`,
+              {
+                method: "GET",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `JWT ${cookie.get("access_token")}`,
+                },
+              }
+            );
+            if (res.ok) {
+              const [profile] = await res.json();
+              setLoginUser(profile);
+              return profile;
+            } else if (res.status === 401) {
+              alert("401 Unauthorized\n認証エラー");
+              return;
+            } else {
+              alert("何らかのエラー");
+              return;
+            }
+          } catch (err) {
+            alert(err + "\n予期しないエラー");
+          }
+        })();
+      
+
+
         router.push("/");
       })
       .catch((error) => {
